@@ -5,7 +5,7 @@ type HttpMethod = "get" | "post" | "put" | "patch" | "delete";
 
 type PayloadType = string | Record<string, unknown> | FormData;
 
-interface SuccessResponse<SuccessData> {
+interface SuccessResponse<SuccessData = unknown> {
   code: "success";
   data: SuccessData;
   headers: unknown;
