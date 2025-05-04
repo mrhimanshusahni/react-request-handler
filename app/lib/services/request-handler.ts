@@ -35,7 +35,11 @@ interface RequestHandler<BodyType = BasePayloadType> {
 
 const axiosInstance = axios.create({});
 
-const requestHandler = async <V, BodyType = BasePayloadType, E = AxiosError>({
+const requestHandler = async <
+  V = unknown,
+  BodyType = BasePayloadType,
+  E = AxiosError,
+>({
   contentType,
   isFormData,
   method,
