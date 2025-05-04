@@ -7,7 +7,10 @@ const getPosts = async () => {
     title: string;
     body: string;
   }
-  return await requestHandler<E>({
+  interface R {
+    id: number;
+  }
+  return await requestHandler<E, R>({
     url: "https://jsonplaceholder.typicode.com/posts",
     method: "post",
     requestData: {

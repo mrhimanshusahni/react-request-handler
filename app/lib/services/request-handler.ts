@@ -3,7 +3,10 @@ import axios, { AxiosError, type GenericAbortSignal } from "axios";
 
 type HttpMethod = "get" | "post" | "put" | "patch" | "delete";
 
-type PayloadType = string | Record<string, unknown> | FormData;
+type BasePayloadType =
+  | Record<string, unknown>
+  | FormData
+  | Array<Record<string, unknown>>;
 
 interface SuccessResponse<SuccessData = unknown> {
   code: "success";
@@ -20,19 +23,19 @@ type BaseResponse<V, E = AxiosError> = Promise<
   SuccessResponse<V> | ErrorResponse<E>
 >;
 
-interface RequestHandler {
+interface RequestHandler<BodyType = BasePayloadType> {
   contentType?: string;
   isFormData?: boolean;
   method: HttpMethod;
   params?: Record<string, unknown>;
-  requestData?: PayloadType;
+  requestData?: BodyType;
   signal?: GenericAbortSignal | undefined;
   url: string;
 }
 
 const axiosInstance = axios.create({});
 
-const requestHandler = async <V, E = AxiosError>({
+const requestHandler = async <V, BodyType = BasePayloadType, E = AxiosError>({
   contentType,
   isFormData,
   method,
@@ -40,7 +43,7 @@ const requestHandler = async <V, E = AxiosError>({
   requestData,
   signal,
   url,
-}: RequestHandler): BaseResponse<V, E> => {
+}: RequestHandler<BodyType>): BaseResponse<V, E> => {
   try {
     const axiosOptions = {
       url,
